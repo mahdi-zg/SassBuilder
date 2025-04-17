@@ -25,8 +25,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/futurenow_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
-      OPENAI_API_KEY: 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
-      GOOGLE_APPLICATION_CREDENTIALS: /app/config/google-credentials.json
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
     volumes:
       - ./backend/config:/app/config                            
       - ./backend/audios:/app/audios                            

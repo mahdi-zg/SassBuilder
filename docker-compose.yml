@@ -1,0 +1,48 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: futurenow_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: futurenow-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/futurenow_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      OPENAI_API_KEY: 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
+      GOOGLE_APPLICATION_CREDENTIALS: /app/config/google-credentials.json
+    volumes:
+      - ./backend/config:/app/config                            
+      - ./backend/audios:/app/audios                            
+      - ./backend/uploads:/app/uploads                          
+      - ./backend/bin:/app/bin   
+
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: futurenow-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
